@@ -5,35 +5,11 @@
       <section id="suma_libre">
         <div
           class="fila_circulo"
-          v-for="(numero, index) in numRandom"
+          v-for="numero in numRandom"
           :key="numero.id"
           :id="numero.id"
         >
-          <div v-if="numero.id % 2 == 0" class="circulo">
-            {{ numero.numero1 }}
-          </div>
-          <div v-else class="circulo">
-            <input
-              v-model="respuesta['suma' + index]"
-              class="text_circulo"
-              type="text"
-              name=""
-            />
-          </div>
-          <div class="mas">+</div>
-          <div v-if="numero.id % 2 != 0" class="circulo">
-            {{ numero.numero2 }}
-          </div>
-          <div v-else class="circulo">
-            <input
-              v-model="respuesta['suma' + index]"
-              class="text_circulo"
-              type="text"
-              name=""
-            />
-          </div>
-          <div class="igual">=</div>
-          <div class="circulo">{{ numero.total }}</div>
+          <FilaSuma :number="numero"/>
         </div>
       </section>
     </section>
@@ -42,38 +18,14 @@
 
 <script>
 // @ is an alias to /src
-
+import FilaSuma from '@/components/FilaSuma'
 export default {
   name: 'Home',
+  components: {
+    FilaSuma
+  },
   data () {
     return {
-      // operacion: [
-      //   {
-      //     total: 15,
-      //     numero1: 10,
-      //     numero2: ''
-      //   },
-      //   {
-      //     total: 20,
-      //     numero2: 6,
-      //     numero1: ''
-      //   },
-      //   {
-      //     total: 14,
-      //     numero1: 2,
-      //     numero2: ''
-      //   },
-      //   {
-      //     total: 13,
-      //     numero2: 7,
-      //     numero1: ''
-      //   },
-      //   {
-      //     total: 8,
-      //     numero1: 4,
-      //     numero2: ''
-      //   }
-      // ],
       numRandom: [],
       respuesta: {},
       isCorrect: true,
@@ -81,70 +33,13 @@ export default {
     }
   },
   watch: {
-    respuesta: {
-      handler (newValue, oldValue) {
-        const valores = Object.values(newValue)
-        const operaciones = [...this.numRandom]
-        for (let i = 0; i < valores.length; i++) {
-          if (i % 2 !== 0) {
-            // console.log(operaciones[i].numero1)
-            if (operaciones[i].numero1 === parseInt(valores[i])) {
-              // console.log('correcto', operaciones[i].numero1, valores[i])
-              this.playSuccess()
-              const element = document.getElementById(i)
-              // console.log(element)
-              element.classList.add('correcto')
-            } else {
-              // console.log('fallaste', operaciones[i].numero1, valores[i])
-              this.playError()
-              const element = document.getElementById(i)
-              element.classList.add('incorrecto')
-              // console.log(element)
-            }
-          } else {
-            // console.log(operaciones[i].numero2)
-            if (operaciones[i].numero2 === parseInt(valores[i])) {
-              // console.log('correcto', operaciones[i].numero2, valores[i])
-              this.playSuccess()
-              const element = document.getElementById(i)
-              element.classList.add('correcto')
-              // console.log(element)
-            } else {
-              // console.log('fallaste', operaciones[i].numero2, valores[i])
-              this.playError()
-              const element = document.getElementById(i)
-              // console.log(element)
-              element.classList.add('incorrecto')
-            }
-          }
-        }
-      }
-    }
-  },
-  methods: {
-    playSuccess () {
-      var audio = new Audio(require('../assets/audio/correcto.mp3')) // path to file
-      audio.play()
-    },
-    playError () {
-      var audio = new Audio(require('../assets/audio/error.mp3')) // path to file
-      audio.play()
-    }
-    // setBackgroundSuccess () {
-    //   return 'correcto'
-    // },
-    // setBackgroundError () {
-    //   return 'incorrecto'
-    // }
   },
   created () {
     function getRandomInt (min, max) {
       return Math.floor(Math.random() * (max - min)) + min
     }
-    // console.log(Math.floor(Math.random() * (20 - 2)) + 2)
     for (let index = 0; index < 4; index++) {
       const total = getRandomInt(2, 21)
-      // this.numRandom.push(getRandomInt(2, 20))
       const numero1 = getRandomInt(1, total)
       const newObj = {
         id: index,
@@ -154,6 +49,9 @@ export default {
       }
       this.numRandom.push(newObj)
     }
+  },
+  methods: {
+
   }
 }
 </script>
@@ -175,6 +73,9 @@ export default {
 }
 .fila_circulo {
   margin: 15px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .circulo,
