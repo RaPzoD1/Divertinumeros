@@ -1,7 +1,8 @@
 # divertinumero
 
-- The numbers to complete the series must be draggable, they must not be entered by keyboard.
-- It must be validated that the numerical series is being completed correctly using colors and audios.
+Generate the sums randomly so that it is always different.
+- Consider positive numbers from 1 to 20.
+- Validate the sums using audios and colors.
 
 ## Live Demo
 https://divertinumeros.netlify.app
